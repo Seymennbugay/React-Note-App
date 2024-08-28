@@ -1,23 +1,31 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import NoteList from './components/NoteList';
+import NoteForm from './components/NoteForm';
 import './App.css';
 
 function App() {
+  const [notes, setNotes] = useState([]);
+  const [filter, setFilter] = useState('');
+
+  const addNote = (note) => {
+    setNotes([...notes, note]);
+  };
+
+  const filteredNotes = notes.filter((note) => 
+    note.text.toLowerCase().includes(filter.toLowerCase())
+  );
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Not Uygulaması</h1>
+      <NoteForm addNote={addNote} />
+      <input 
+        type="text" 
+        placeholder="Notlarda arama yap..." 
+        value={filter} 
+        onChange={(e) => setFilter(e.target.value)} 
+      />
+      <NoteList notes={filteredNotes} />
     </div>
   );
 }
